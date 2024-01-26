@@ -21,13 +21,13 @@ public class UserController {
     }
 
     //Для отображения результатов в браузере использую вместо GET, так как с POST - 405 method not allowed (Request method 'GET' is not supported)
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<User> createUser(@RequestParam String name, @RequestParam int age, @RequestParam String email) {
+    @RequestMapping(path="save",method = RequestMethod.GET)
+    public ResponseEntity<User> saveUser(@RequestParam String name, @RequestParam int age, @RequestParam String email) {
         return new ResponseEntity<>(userService.createUser(name, age, email), HttpStatus.CREATED);
     }
 
 
-    @RequestMapping(path = "/getall", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }

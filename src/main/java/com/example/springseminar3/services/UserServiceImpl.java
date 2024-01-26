@@ -47,14 +47,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteUser(Long id) {
-        String response = "Deletion failed, id not found";
+        String response = "";
         Optional<Registration> registration = registrationRepository.findAll().stream().filter(it -> it.getUser().getId().equals(id)).findFirst();
         if (registration.isPresent()) {
-            response = "Success";
+            response += "Registration is deleted successfully.";
             registrationRepository.delete(registration.get());
             notificationService.notifyRegistrationDelete(id);
         }
-        userRepository.deleteById(id);
+
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            response += " User is deleted successfully";
+        } else {
+            response = "User is not found!";
+        }
+
         notificationService.notifyUserDelete(id);
         return response;
     }
